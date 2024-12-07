@@ -7,7 +7,11 @@
 #include <algorithm>
 #include <regex>
 
+#define PART2   false
+
 using namespace std;
+
+
 
 map<long long, vector<int>> getData(vector<string> inputs)
 {
@@ -48,6 +52,11 @@ void getPermutations(string prefix, int n, vector<string> &ops)
 
     getPermutations(prefix + "+", n-1, ops);
     getPermutations(prefix + "*", n-1, ops);
+
+#ifdef PART2
+    getPermutations(prefix + "|", n-1, ops);
+#endif
+
 }
 
 long long makeEquation(string token, vector<int>numbers)
@@ -59,8 +68,15 @@ long long makeEquation(string token, vector<int>numbers)
     {
         if(ch == '+')
             result += numbers[i+1];
-        else
+        else if(ch == '*')
             result *= numbers[i+1];
+#ifdef PART2            
+        else if(ch == '|')
+        {
+            string tmp = to_string(result) + to_string(numbers[i+1]);
+            result = stoll(tmp);            
+        }
+#endif
         i++;                        
     }
 
@@ -101,6 +117,7 @@ long long checkNumbers(const map<long long, vector<int>> data)
 
     return sum;
 }
+
 
 int main()
 {
