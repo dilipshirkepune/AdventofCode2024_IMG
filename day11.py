@@ -73,15 +73,16 @@ def splitStone(stone, loopcount):
         result = 1
     elif(stone == 0):
         result = splitStone(1, loopcount-1)    
-    # odd length
+    # even length
     elif(len(str(stone))%2 == 0):
         first = (str(stone)[:len(str(stone))//2])
-        second = (str(stone)[len(str(stone))//2:])
-        
+        second = (str(stone)[len(str(stone))//2:])        
         result = splitStone(int(first), loopcount-1) + splitStone(int(second), loopcount-1)
-    else:
+    else: #odd length multiply by 2024
         result = splitStone(stone*2024, loopcount-1)
 
+    # add computed result to lookup so we can skip if same combination 
+    # occure again for another number
     LUT1[(stone, loopcount)] = result
 
     return result
